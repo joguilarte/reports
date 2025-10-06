@@ -1,596 +1,159 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Roadmap de Seguridad - Entorno Avanter</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Roadmap Técnico de Seguridad - Avanter (Versión Final Estilizada)</title>
+  <style>
+    * {margin:0; padding:0; box-sizing:border-box;}
+    body {font-family:'Segoe UI', Tahoma, sans-serif; background:linear-gradient(120deg,#1a2980,#26d0ce); color:#333; padding:30px;}
+    .container {max-width:1350px; margin:0 auto; background:white; border-radius:16px; box-shadow:0 25px 50px rgba(0,0,0,0.15); overflow:hidden;}
 
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
-            color: #333;
-            min-height: 100vh;
-            padding: 20px;
-        }
+    .header {background:linear-gradient(135deg,#283e51,#485563); color:white; padding:50px 40px; text-align:center;}
+    .header h1 {font-size:2.6em; font-weight:300; margin-bottom:10px;}
+    .header p {font-size:1.2em; opacity:0.9;}
 
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-            overflow: hidden;
-        }
+    .phase {margin:40px; border-radius:14px; overflow:hidden; position:relative; transition:transform .2s;}
+    .phase:hover {transform:translateY(-4px);}
+    .phase-header {display:flex; justify-content:space-between; align-items:center; padding:25px 30px; color:white;}
+    .phase-content {background:#fff; padding:30px;}
+    .phase-number {width:55px; height:55px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:bold; font-size:1.3em; box-shadow:inset 0 0 10px rgba(255,255,255,0.3);}
+    .phase-title {font-size:1.5em; font-weight:600;}
+    .phase-duration {background:rgba(255,255,255,0.2); padding:8px 16px; border-radius:20px; font-weight:500;}
 
-        .header {
-            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
-            color: white;
-            padding: 40px;
-            text-align: center;
-        }
+    .phase.red .phase-header {background:linear-gradient(135deg,#e74c3c,#ff7675);} .phase.red .phase-number {background:#c0392b;}
+    .phase.blue .phase-header {background:linear-gradient(135deg,#2980b9,#6dd5fa);} .phase.blue .phase-number {background:#1f5fa4;}
+    .phase.green .phase-header {background:linear-gradient(135deg,#27ae60,#6dd47e);} .phase.green .phase-number {background:#1e8449;}
+    .phase.orange .phase-header {background:linear-gradient(135deg,#f39c12,#f6d365);} .phase.orange .phase-number {background:#e67e22;}
 
-        .header h1 {
-            font-size: 2.8em;
-            margin-bottom: 15px;
-            font-weight: 300;
-        }
+    .phase-objective {background:#f8f9fa; border-left:4px solid #3498db; padding:20px; border-radius:8px; margin-bottom:20px;}
+    .phase-objective h4 {margin-bottom:8px; color:#2c3e50;}
+    .actions-grid {display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:15px;}
+    .action-item {background:#f8f9fa; border-left:4px solid #3498db; border-radius:8px; padding:15px; transition:all .2s;}
+    .action-item:hover {background:#eaf2fb;}
 
-        .header p {
-            font-size: 1.2em;
-            opacity: 0.9;
-            margin-bottom: 10px;
-        }
+    .cost-analysis {background:#e3f2fd; padding:40px;}
+    .cost-analysis h3 {color:#1976d2; margin-bottom:20px; font-size:1.6em;}
+    .cost-item {background:white; border-radius:8px; padding:15px 20px; margin-bottom:10px; display:flex; justify-content:space-between; align-items:center; box-shadow:0 2px 8px rgba(0,0,0,0.05);}
+    .note {background:#fff3cd; border-left:4px solid #f1c40f; padding:15px; border-radius:8px; margin-top:15px;}
 
-        .incident-summary {
-            background: #e74c3c;
-            color: white;
-            padding: 20px;
-            margin: 20px 40px;
-            border-radius: 8px;
-            font-size: 1.1em;
-        }
-
-        .current-status {
-            background: #f8f9fa;
-            padding: 30px 40px;
-            border-left: 5px solid #27ae60;
-        }
-
-        .current-status h2 {
-            color: #27ae60;
-            margin-bottom: 20px;
-            font-size: 1.8em;
-        }
-
-        .status-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 20px;
-            margin-top: 20px;
-        }
-
-        .status-item {
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
-            border-left: 4px solid #27ae60;
-        }
-
-        .status-item h4 {
-            color: #2c3e50;
-            margin-bottom: 10px;
-            font-size: 1.1em;
-        }
-
-        .timeline {
-            padding: 40px;
-        }
-
-        .timeline h2 {
-            text-align: center;
-            color: #2c3e50;
-            font-size: 2.2em;
-            margin-bottom: 40px;
-            font-weight: 300;
-        }
-
-        .phase {
-            margin-bottom: 50px;
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
-            overflow: hidden;
-            border-left: 6px solid #3498db;
-        }
-
-        .phase:nth-child(3) { border-left-color: #2ecc71; }
-        .phase:nth-child(4) { border-left-color: #f39c12; }
-        .phase:nth-child(5) { border-left-color: #e74c3c; }
-
-        .phase-header {
-            background: linear-gradient(135deg, #ecf0f1 0%, #bdc3c7 100%);
-            padding: 25px 30px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .phase-number {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background: #3498db;
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5em;
-            font-weight: bold;
-        }
-
-        .phase:nth-child(3) .phase-number { background: #2ecc71; }
-        .phase:nth-child(4) .phase-number { background: #f39c12; }
-        .phase:nth-child(5) .phase-number { background: #e74c3c; }
-
-        .phase-title-container {
-            flex: 1;
-            margin-left: 20px;
-        }
-
-        .phase-title {
-            font-size: 1.6em;
-            color: #2c3e50;
-            margin-bottom: 5px;
-            font-weight: 600;
-        }
-
-        .phase-duration {
-            background: #34495e;
-            color: white;
-            padding: 8px 15px;
-            border-radius: 20px;
-            font-size: 0.9em;
-            font-weight: 500;
-        }
-
-        .phase-content {
-            padding: 30px;
-        }
-
-        .phase-objective {
-            background: #f8f9fa;
-            padding: 20px;
-            border-radius: 8px;
-            margin-bottom: 25px;
-            border-left: 4px solid #3498db;
-        }
-
-        .phase:nth-child(3) .phase-objective { border-left-color: #2ecc71; }
-        .phase:nth-child(4) .phase-objective { border-left-color: #f39c12; }
-        .phase:nth-child(5) .phase-objective { border-left-color: #e74c3c; }
-
-        .phase-objective h4 {
-            color: #2c3e50;
-            margin-bottom: 10px;
-            font-size: 1.2em;
-        }
-
-        .actions-section {
-            margin-top: 25px;
-        }
-
-        .actions-section h4 {
-            color: #2c3e50;
-            margin-bottom: 15px;
-            font-size: 1.2em;
-            border-bottom: 2px solid #ecf0f1;
-            padding-bottom: 8px;
-        }
-
-        .actions-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 15px;
-        }
-
-        .action-item {
-            background: #f8f9fa;
-            padding: 15px;
-            border-radius: 6px;
-            border-left: 3px solid #3498db;
-            position: relative;
-            padding-left: 35px;
-        }
-
-        .phase:nth-child(3) .action-item { border-left-color: #2ecc71; }
-        .phase:nth-child(4) .action-item { border-left-color: #f39c12; }
-        .phase:nth-child(5) .action-item { border-left-color: #e74c3c; }
-
-        .action-item::before {
-            content: '•';
-            position: absolute;
-            left: 15px;
-            top: 15px;
-            color: #3498db;
-            font-size: 1.2em;
-            font-weight: bold;
-        }
-
-        .phase:nth-child(3) .action-item::before { color: #2ecc71; }
-        .phase:nth-child(4) .action-item::before { color: #f39c12; }
-        .phase:nth-child(5) .action-item::before { color: #e74c3c; }
-
-        .services-included {
-            background: #e8f5e8;
-            padding: 20px;
-            border-radius: 8px;
-            margin-top: 20px;
-        }
-
-        .services-included h5 {
-            color: #27ae60;
-            margin-bottom: 15px;
-            font-size: 1.1em;
-        }
-
-        .technical-considerations {
-            background: #fff3cd;
-            padding: 30px 40px;
-            margin: 20px 0;
-        }
-
-        .technical-considerations h3 {
-            color: #856404;
-            margin-bottom: 20px;
-            font-size: 1.6em;
-        }
-
-        .consideration-item {
-            background: white;
-            padding: 20px;
-            margin-bottom: 15px;
-            border-radius: 8px;
-            border-left: 4px solid #ffc107;
-        }
-
-        .consideration-item h4 {
-            color: #2c3e50;
-            margin-bottom: 10px;
-        }
-
-        .cost-analysis {
-            background: #e3f2fd;
-            padding: 30px 40px;
-        }
-
-        .cost-analysis h3 {
-            color: #1976d2;
-            margin-bottom: 20px;
-            font-size: 1.6em;
-        }
-
-        .cost-item {
-            background: white;
-            padding: 15px 20px;
-            margin-bottom: 10px;
-            border-radius: 6px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .cost-amount {
-            color: #1976d2;
-            font-weight: bold;
-        }
-
-        .next-steps {
-            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
-            color: white;
-            padding: 30px 40px;
-        }
-
-        .next-steps h3 {
-            margin-bottom: 20px;
-            font-size: 1.8em;
-        }
-
-        .next-steps ol {
-            padding-left: 20px;
-        }
-
-        .next-steps li {
-            margin-bottom: 10px;
-            font-size: 1.1em;
-            line-height: 1.6;
-        }
-
-        .stats {
-            background: #f8f9fa;
-            padding: 30px 40px;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-        }
-
-        .stat-card {
-            background: white;
-            padding: 25px;
-            border-radius: 8px;
-            text-align: center;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
-        }
-
-        .stat-number {
-            font-size: 2.5em;
-            font-weight: bold;
-            color: #3498db;
-            margin-bottom: 8px;
-        }
-
-        .stat-label {
-            color: #7f8c8d;
-            font-size: 0.95em;
-            font-weight: 500;
-        }
-
-        @media (max-width: 768px) {
-            .phase-header {
-                flex-direction: column;
-                text-align: center;
-            }
-
-            .phase-title-container {
-                margin-left: 0;
-                margin-top: 15px;
-            }
-
-            .actions-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .status-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-    </style>
+    .next-steps {background:linear-gradient(135deg,#283e51,#485563); color:white; padding:35px 45px;}
+    .next-steps h3 {margin-bottom:15px;}
+    .next-steps ol {padding-left:25px; line-height:1.6;}
+  </style>
 </head>
 <body>
-    <div class="container" id="reporte">
-        <div class="header">
-            <h1>Roadmap Técnico de Seguridad</h1>
-            <p>Entorno Avanter - Fortalecimiento Post-Incidente</p>
-            <div class="incident-summary">
-                <strong>Incidente:</strong> Ejecución de código malicioso "PHP 5433" en servidor beneficiarte, con compromiso de archivos de configuración y aprovechamiento de vulnerabilidades web
-            </div>
-        </div>
-
-        <div class="current-status">
-            <h2>Estado Actual - Acciones Completadas</h2>
-            <div class="status-grid">
-                <div class="status-item">
-                    <h4>✅ Detección y Análisis</h4>
-                    <p>Identificación de ejecución local de código malicioso aprovechando vulnerabilidades web (fuera del canal RDP)</p>
-                </div>
-                <div class="status-item">
-                    <h4>✅ Aislamiento Operativo</h4>
-                    <p>Servidor infectado sin intervención para mantener trazabilidad hasta análisis forense</p>
-                </div>
-                <div class="status-item">
-                    <h4>✅ Nueva Instancia Limpia</h4>
-                    <p>Windows Server 2022 con antivirus actualizado, SO patcheado y disco Z: montado - operativa desde miércoles</p>
-                </div>
-                <div class="status-item">
-                    <h4>✅ Backup y Recuperación</h4>
-                    <p>Backups válidos disponibles (último 2 AM día del incidente) con recuperación de archivos críticos</p>
-                </div>
-                <div class="status-item">
-                    <h4>✅ AWS GuardDuty</h4>
-                    <p>Activado con análisis de CloudTrail, VPC Flow Logs y DNS Logs para detección inteligente de amenazas.</p>
-                </div>
-                <div class="status-item">
-                    <h4>✅ AWS Inspector</h4>
-                    <p>Agentes desplegados en instancias productivas con escaneo continuo de vulnerabilidades y puertos abiertos.</p>
-                </div>
-            </div>
-        </div>
-
-        <div class="timeline">
-            <h2>Roadmap de Implementación</h2>
-
-            <div class="phase">
-                <div class="phase-header">
-                    <div class="phase-number">1</div>
-                    <div class="phase-title-container">
-                        <h3 class="phase-title">Aislamiento y Migración Final</h3>
-                    </div>
-                    <span class="phase-duration">8-12 horas</span>
-                </div>
-                <div class="phase-content">
-                    <div class="phase-objective">
-                        <h4>Objetivo</h4>
-                        <p>Finalizar la transición al entorno limpio, garantizando que los servicios críticos estén operativos sin arrastrar configuraciones o archivos potencialmente comprometidos.</p>
-                    </div>
-                    <div class="actions-section">
-                        <h4>Acciones Detalladas</h4>
-                        <div class="actions-grid">
-                            <div class="action-item">Conectar el nuevo servidor al balanceador y validar la carga completa de todos los sitios web</div>
-                            <div class="action-item">Verificar logs, certificados SSL y conectividad con sistemas externos (CRM, web services)</div>
-                            <div class="action-item">Aislar definitivamente la instancia original afectada retirando todas las interfaces de red</div>
-                            <div class="action-item">Realizar limpieza lógica: depurar accesos residuales, usuarios innecesarios, scripts no autorizados</div>
-                            <div class="action-item">Eliminar archivos sospechosos y validar integridad del sistema</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="phase">
-                <div class="phase-header">
-                    <div class="phase-number">2</div>
-                    <div class="phase-title-container">
-                        <h3 class="phase-title">Activación de Servicios de Seguridad AWS</h3>
-                    </div>
-                    <span class="phase-duration">12-16 horas</span>
-                </div>
-                <div class="phase-content">
-                    <div class="phase-objective">
-                        <h4>Objetivo</h4>
-                        <p>Incorporar controles de detección y protección a nivel cuenta e instancias para anticipar comportamientos sospechosos, vulnerabilidades o tráfico malicioso antes de que puedan causar daño.</p>
-                    </div>
-                    <div class="actions-section">
-                        <h4>AWS Security Hub</h4>
-                        <div class="actions-grid">
-                            <div class="action-item">Activar Security Hub en la cuenta principal y habilitar integración con servicios AWS existentes</div>
-                            <div class="action-item">Configurar la agregación de findings desde GuardDuty, Inspector y WAF</div>
-                            <div class="action-item">Habilitar controles de cumplimiento basados en CIS AWS Foundations Benchmark</div>
-                            <div class="action-item">Configurar integración con AWS Config para validación continua de buenas prácticas</div>
-                            <div class="action-item">Establecer tableros de seguridad centralizados con priorización de findings críticos</div>
-                            <div class="action-item">Definir notificaciones automáticas hacia SNS/Slack para findings de severidad alta</div>
-                        </div>
-
-                        <h4>AWS WAF</h4>
-                        <div class="actions-grid">
-                            <div class="action-item">Asociar al Application Load Balancer principal existente</div>
-                            <div class="action-item">Activar conjuntos de reglas administradas por AWS (OWASP Top 10, Bot Control)</div>
-                            <div class="action-item">Implementar reglas específicas contra ataques PHP similares al sufrido</div>
-                            <div class="action-item">Configurar reglas SQL Injection y XSS</div>
-                            <div class="action-item">Iniciar en modo log-only (COUNT) para evaluar falsos positivos</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="phase">
-                <div class="phase-header">
-                    <div class="phase-number">3</div>
-                    <div class="phase-title-container">
-                        <h3 class="phase-title">Validación de Exposición y Endurecimiento</h3>
-                    </div>
-                    <span class="phase-duration">10-14 horas</span>
-                </div>
-                <div class="phase-content">
-                    <div class="phase-objective">
-                        <h4>Objetivo</h4>
-                        <p>Revisar y corregir configuraciones que puedan representar superficie innecesaria de ataque, tanto a nivel de red como de servidor web, implementando las mejores prácticas de seguridad.</p>
-                    </div>
-                    <div class="actions-section">
-                        <h4>Configuración de Red</h4>
-                        <div class="actions-grid">
-                            <div class="action-item">Revisión completa de Security Groups y NACLs</div>
-                            <div class="action-item">Auditoría de listeners del balanceador y puertos expuestos</div>
-                            <div class="action-item">Validación de configuración DNS y flujo de tráfico</div>
-                        </div>
-
-                        <h4>Endurecimiento TLS</h4>
-                        <div class="actions-grid">
-                            <div class="action-item">Verificar configuración de certificados SSL</div>
-                            <div class="action-item">Eliminar protocolos obsoletos (TLS 1.0, 1.1)</div>
-                            <div class="action-item">Configurar cipher suites seguros</div>
-                        </div>
-
-                        <h4>Endurecimiento IIS</h4>
-                        <div class="actions-grid">
-                            <div class="action-item">Ocultar headers informativos (x-powered-by, x-aspnet-version, server)</div>
-                            <div class="action-item">Implementar X-Content-Type-Options, Strict-Transport-Security</div>
-                            <div class="action-item">Configurar X-Frame-Options y Content-Security-Policy</div>
-                            <div class="action-item">Auditar y eliminar scripts/ejecutables innecesarios en directorios públicos</div>
-                            <div class="action-item">Configurar logging detallado de IIS para investigaciones</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="technical-considerations">
-            <h3>Consideraciones Técnicas Adicionales</h3>
-            
-            <div class="consideration-item">
-                <h4>Exposición de Información del Servidor</h4>
-                <p>Se observan cabeceras HTTP que exponen detalles técnicos (.NET 4.0.30319, IIS 10.0). Esta información puede ser aprovechada por herramientas automáticas de escaneo para identificar vulnerabilidades específicas.</p>
-            </div>
-
-            <div class="consideration-item">
-                <h4>Beneficios Inmediatos del WAF</h4>
-                <p>Permitirá mitigar automáticamente ataques conocidos incluso en modo log-only inicial, proporcionando visibilidad detallada sobre patrones de tráfico inusuales.</p>
-            </div>
-
-            <div class="consideration-item">
-                <h4>Análisis Forense Pendiente</h4>
-                <p>Se recomienda análisis forense del servidor comprometido para identificar el vector de ataque exacto, confirmar otros archivos comprometidos y desarrollar IOCs específicos.</p>
-            </div>
-        </div>
-
-<div class="cost-analysis">
-    <h3>Modelo de Costos AWS</h3>
-    <div class="cost-item">
-        <span>AWS GuardDuty (análisis de logs)</span>
-        <span class="cost-amount">$3-5 USD/mes</span>
-    </div>
-    <div class="cost-item">
-        <span>AWS Inspector (por instancia)</span>
-        <span class="cost-amount">$1.2 USD/mes</span>
-    </div>
-    <div class="cost-item">
-        <span>AWS Security Hub (consolidación de findings y compliance)</span>
-        <span class="cost-amount">$0.001 USD por finding ingestado</span>
-    </div>
-    <div class="cost-item">
-        <span>AWS WAF (reglas y requests)</span>
-        <span class="cost-amount">Variable según tráfico</span>
-    </div>
-</div>
-
-
-        <div class="next-steps">
-            <h3>Próximos Pasos Propuestos</h3>
-            <ol>
-                <li>Aprobación del roadmap y asignación de horas del servicio Advanced hacia ciberseguridad</li>
-                <li>Kick-off técnico para coordinar ventanas de trabajo y contactos clave</li>
-                <li>Inicio inmediato de Fase 1 para finalizar la estabilización del entorno</li>
-                <li>Planificación detallada de Fases 2-3 con cronograma específico según disponibilidad del cliente</li>
-            </ol>
-        </div>
-
-        
-<div class="stats">
-    <div class="stat-card">
-        <div class="stat-number">15</div>
-        <div class="stat-label">Días estimados</div>
-    </div>
-</div>
-</div> <!-- acá cierra el container -->
-
-            
-            
-            
-            
-        </div>
+  <div class="container">
+    <div class="header">
+      <h1>Roadmap Técnico de Seguridad</h1>
+      <p>Entorno Avanter – Revalidación y Priorización Post-Incidente</p>
     </div>
 
-    ...
-</div> <!-- acá cierra el container -->
+    <!-- Fase 0 -->
+    <div class="phase red">
+      <div class="phase-header">
+        <div class="phase-number">0</div>
+        <div class="phase-title">Acción Urgente</div>
+        <span class="phase-duration">6–8 horas</span>
+      </div>
+      <div class="phase-content">
+        <div class="phase-objective"><h4>Problema crítico</h4><p>Servicios fuera del ALB sin protección WAF, utilizando certificados externos. Prioridad máxima para reducir exposición.</p></div>
+        <div class="phase-objective"><h4>Objetivo</h4><p>Integrar los servicios bajo ALB/WAF garantizando compatibilidad con certificados (externos o ACM).</p></div>
+        <div class="actions-grid">
+          <div class="action-item">Auditar configuración actual de servicios y certificados</div>
+          <div class="action-item">Diseñar esquema seguro de integración con ALB/WAF</div>
+          <div class="action-item">Validar continuidad operativa posterior a la migración</div>
+        </div>
+      </div>
+    </div>
 
-<!-- Botón para descargar PDF -->
+    <!-- Fase 1 -->
+    <div class="phase blue">
+      <div class="phase-header">
+        <div class="phase-number">1</div>
+        <div class="phase-title">Validación de Migración</div>
+        <span class="phase-duration">6 horas</span>
+      </div>
+      <div class="phase-content">
+        <div class="phase-objective"><h4>Objetivo</h4><p>Confirmar la estabilidad del entorno limpio. Fase de verificación, no de nueva migración.</p></div>
+        <div class="actions-grid">
+          <div class="action-item">Revisar logs, certificados y conectividad</div>
+          <div class="action-item">Cerrar definitivamente la instancia comprometida</div>
+          <div class="action-item">Depurar accesos y eliminar scripts innecesarios</div>
+        </div>
+      </div>
+    </div>
 
+    <!-- Fase 2 -->
+    <div class="phase green">
+      <div class="phase-header">
+        <div class="phase-number">2</div>
+        <div class="phase-title">Servicios de Seguridad AWS</div>
+        <span class="phase-duration">8–10 horas</span>
+      </div>
+      <div class="phase-content">
+        <div class="phase-objective"><h4>Objetivo</h4><p>Consolidar detección, monitoreo y cumplimiento continuo.</p></div>
+        <div class="actions-grid">
+          <div class="action-item"><strong>GuardDuty:</strong> detección de amenazas en logs</div>
+          <div class="action-item"><strong>Inspector:</strong> escaneo de instancias y contenedores</div>
+          <div class="action-item"><strong>Security Hub:</strong> centralización de findings y compliance (Free tier 10.000 controles)</div>
+        </div>
+      </div>
+    </div>
 
-<!-- Librería y script -->
+    <!-- Fase 3 -->
+    <div class="phase blue">
+      <div class="phase-header" style="background:linear-gradient(135deg,#34495e,#7f8c8d);">
+        <div class="phase-number" style="background:#2c3e50;">3</div>
+        <div class="phase-title">Revalidación de Endurecimiento</div>
+        <span class="phase-duration">4–6 horas</span>
+      </div>
+      <div class="phase-content">
+        <div class="phase-objective"><h4>Objetivo</h4><p>Verificar medidas post-incidente, asegurando configuración óptima.</p></div>
+        <div class="actions-grid">
+          <div class="action-item">Confirmar eliminación de TLS 1.0/1.1</div>
+          <div class="action-item">Validar cabeceras de seguridad y CSP</div>
+          <div class="action-item">Auditar logs IIS y limpieza de scripts residuales</div>
+        </div>
+      </div>
+    </div>
 
+    <!-- Fase 4 -->
+    <div class="phase orange">
+      <div class="phase-header">
+        <div class="phase-number">4</div>
+        <div class="phase-title">Mantenimiento Continuo</div>
+        <span class="phase-duration">20–25h/mes</span>
+      </div>
+      <div class="phase-content">
+        <div class="phase-objective"><h4>Objetivo</h4><p>Soporte conjunto mensual para monitoreo, respuesta y mejora continua.</p></div>
+        <div class="actions-grid">
+          <div class="action-item">Monitoreo GuardDuty/Inspector diario</div>
+          <div class="action-item">Ajuste dinámico de reglas WAF según tráfico</div>
+          <div class="action-item">Reporte ejecutivo mensual con métricas</div>
+        </div>
+      </div>
+    </div>
 
-</body>
-</html>
+    <!-- Costos -->
+    <div class="cost-analysis">
+      <h3>Modelo de Costos AWS</h3>
+      <div class="cost-item"><span>AWS WAF</span><span>$10 USD/mes (costo base por ACL; pueden sumarse cargos variables por tráfico o reglas)</span></div>
+      <div class="cost-item"><span>AWS Inspector (7 instancias)</span><span>$10 USD total (por todas las instancias)</span></div>
+      <div class="cost-item"><span>AWS GuardDuty</span><span>Máx $2 USD/mes</span></div>
+      <div class="cost-item"><span>Security Hub</span><span>Sin costo (Free tier permanente)</span></div>
+      <div class="note">Horas totales estimadas: 20–25h iniciales + soporte mensual (parcialmente cubierto por la bolsa de horas contratada).</div>
+    </div>
 
-
+    <div class="next-steps">
+      <h3>Próximos pasos</h3>
+      <ol>
+        <li>Aprobación del roadmap actualizado</li>
+        <li>Kick-off técnico con foco en la Fase 0</li>
+        <li>Ejecución inmediata de mitigación (Fase 0)</li>
+        <li>Revalidación y fortalecimiento progresivo (Fases 1–3)</li>
+      </ol>
+    </div>
+  </div>
 </body>
 </html>
